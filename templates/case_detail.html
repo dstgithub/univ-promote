@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Case Detail</h2>
+
+<table>
+
+<tr>
+    <td><b>ID</b></td>
+    <td>{{ case.id }}</td>
+</tr>
+
+<tr>
+    <td><b>Faculty ID</b></td>
+    <td>{{ case.faculty_id }}</td>
+</tr>
+
+<tr>
+    <td><b>Title</b></td>
+    <td>{{ case.title }}</td>
+</tr>
+
+<tr>
+    <td><b>Statement</b></td>
+    <td>{{ case.statement }}</td>
+</tr>
+
+<tr>
+    <td><b>CV</b></td>
+    <td>
+        {% if case.file_name %}
+            <a href="/uploads/{{ case.file_name }}" target="_blank">
+                📄 View / Download CV
+            </a>
+        {% else %}
+            No CV uploaded
+        {% endif %}
+    </td>
+</tr>
+
+<tr>
+    <td><b>Current Status</b></td>
+    <td>{{ case.status }}</td>
+</tr>
+
+<tr>
+    <td><b>Previous Comments</b></td>
+    <td>{{ case.reviewer_comments or "None" }}</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h3>Review Decision</h3>
+
+<form method="post">
+
+<label>Status</label>
+<br>
+
+<select name="status">
+
+    <option value="Submitted">Submitted</option>
+    <option value="Approved">Approved</option>
+    <option value="Rejected">Rejected</option>
+
+</select>
+
+<br><br>
+
+<label>Comments</label>
+<br>
+
+<textarea name="comments" rows="5" cols="50"></textarea>
+
+<br><br>
+
+<button type="submit">
+Submit Review
+</button>
+
+</form>
+
+<p>
+<a href="/cases">Back to Cases</a>
+</p>
+
+{% endblock %}

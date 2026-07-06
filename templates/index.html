@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="hero">
+
+    <h1>Georgia Tech Promotion System</h1>
+
+    <p>
+        A secure workflow system for managing promotion cases,
+        submissions, and reviews.
+    </p>
+
+</div>
+
+<hr>
+
+<div class="dashboard-grid">
+
+    {% if session.get("role") in ["faculty", "admin"] %}
+
+    <div class="card">
+        <h3>📄 Submit Case</h3>
+        <p>Create a new promotion application with supporting documents.</p>
+        <a href="/submit" class="button">Submit</a>
+    </div>
+
+    <div class="card">
+        <h3>📁 My Cases</h3>
+        <p>View your submitted promotion cases and track status.</p>
+        <a href="/my_cases" class="button">View</a>
+    </div>
+
+    {% endif %}
+
+    {% if session.get("role") in ["reviewer", "admin"] %}
+
+    <div class="card">
+        <h3>📝 Review Cases</h3>
+        <p>Review submitted cases and provide approval decisions.</p>
+        <a href="/cases" class="button">Review</a>
+    </div>
+
+    {% endif %}
+
+    {% if session.get("role") == "admin" %}
+
+    <div class="card">
+        <h3>👥 User Management</h3>
+        <p>Add, edit, and manage system users and roles.</p>
+        <a href="/admin/users" class="button">Manage</a>
+    </div>
+
+    {% endif %}
+
+</div>
+
+<hr>
+
+<div class="footer-note">
+
+    <p>
+        <strong>Simplified Version</strong> — Promotion Case Management System
+    </p>
+
+    <p>
+        Developer: Hui Tang | 2026-07-05
+    </p>
+
+</div>
+
+{% endblock %}

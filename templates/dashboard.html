@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}
+Analytics Dashboard
+{% endblock %}
+
+{% block content %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div style="margin-bottom: 20px;">
+
+    <a href="/export/csv">
+        📄 Download CSV
+    </a>
+
+    &nbsp; | &nbsp;
+
+    <a href="/export/pdf">
+        🧾 Download PDF Report
+    </a>
+
+</div>
+
+<h2>📊 Analytics Dashboard</h2>
+
+<div class="dashboard-grid">
+
+    <div class="card">
+        <h3>Total Cases</h3>
+        <h1>{{ total_cases }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Submitted</h3>
+        <h1 style="color:#f0ad4e;">
+            {{ submitted }}
+        </h1>
+    </div>
+
+    <div class="card">
+        <h3>Approved</h3>
+        <h1 style="color:#5cb85c;">
+            {{ approved }}
+        </h1>
+    </div>
+
+    <div class="card">
+        <h3>Rejected</h3>
+        <h1 style="color:#d9534f;">
+            {{ rejected }}
+        </h1>
+    </div>
+
+</div>
+
+<hr>
+
+<h3>Recent Promotion Cases</h3>
+
+<table>
+
+    <tr>
+        <th>ID</th>
+        <th>Faculty ID</th>
+        <th>Title</th>
+        <th>Status</th>
+    </tr>
+
+    {% for c in recent_cases %}
+
+    <tr>
+
+        <td>{{ c.id }}</td>
+
+        <td>{{ c.faculty_id }}</td>
+
+        <td>{{ c.title }}</td>
+
+        <td>
+
+            {% if c.status == "Approved" %}
+
+                <span style="color:#5cb85c;font-weight:bold;">
+                    {{ c.status }}
+                </span>
+
+            {% elif c.status == "Rejected" %}
+
+                <span style="color:#d9534f;font-weight:bold;">
+                    {{ c.status }}
+                </span>
+
+            {% else %}
+
+                <span style="color:#f0ad4e;font-weight:bold;">
+                    {{ c.status }}
+                </span>
+
+            {% endif %}
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<hr>
+
+<h3>Case Status Analytics</h3>
+
+<div style="display:flex;gap:40px;justify-content:center;flex-wrap:wrap;">
+
+    <div id="pieChart"
+         style="width:500px;height:400px;">
+    </div>
+
+    <div id="barChart"
+         style="width:500px;height:400px;">
+    </div>
+
+</div>
+
+<hr>
+
+<h3>Cases Submitted by Faculty</h3>
+
+<div id="facultyChart"
+     style="width:900px;height:450px;margin:auto;">
+</div>
+
+<script>
+
+const labels = {{ chart_labels|tojson }};
+const values = {{ chart_values|tojson }};
+
+const facultyLabels = {{ faculty_labels|tojson }};
+const facultyValues = {{ faculty_values|tojson }};
+
+const statusColors = [
+    "#f0ad4e",   // Submitted
+    "#5cb85c",   // Approved
+    "#d9534f"    // Rejected
+];
+
+//
+// Pie Chart
+//
+
+Plotly.newPlot(
+    "pieChart",
+    [{
+        labels: labels,
+        values: values,
+        type: "pie",
+        hole: 0.45,
+
+        marker: {
+            colors: statusColors
+        },
+
+        textinfo: "label+percent",
+        hovertemplate:
+            "<b>%{label}</b><br>" +
+            "Cases: %{value}<br>" +
+            "Percentage: %{percent}<extra></extra>"
+    }],
+    {
+        title: "Promotion Case Status Distribution"
+    }
+);
+
+//
+// Status Bar Chart
+//
+
+Plotly.newPlot(
+    "barChart",
+    [{
+        x: labels,
+        y: values,
+        type: "bar",
+
+        marker: {
+            color: statusColors
+        }
+    }],
+    {
+        title: "Cases by Status",
+
+        xaxis: {
+            title: "Status"
+        },
+
+        yaxis: {
+            title: "Number of Cases"
+        }
+    }
+);
+
+//
+// Faculty Bar Chart
+//
+
+Plotly.newPlot(
+    "facultyChart",
+    [{
+        x: facultyLabels,
+        y: facultyValues,
+        type: "bar",
+
+        marker: {
+            color: "#003057"
+        }
+    }],
+    {
+        title: "Promotion Cases Submitted by Faculty",
+
+        xaxis: {
+            title: "Faculty User"
+        },
+
+        yaxis: {
+            title: "Number of Cases"
+        }
+    }
+);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Promotion Cases</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+                       filename='style.css') }}">
+
+</head>
+
+<body>
+
+<h2>Promotion Cases</h2>
+
+<table>
+
+<tr>
+
+<th>ID</th>
+
+<th>Faculty</th>
+
+<th>Title</th>
+
+<th>Status</th>
+
+</tr>
+
+{% for c in cases %}
+
+<tr>
+
+<td>{{ c.id }}</td>
+
+<td>{{ c.faculty_id }}</td>
+
+<td>{{ c.title }}</td>
+
+<td>{{ c.status }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<p>
+
+<a href="/submit">
+
+Submit Another
+
+</a>
+
+</p>
+
+</body>
+
+</html>

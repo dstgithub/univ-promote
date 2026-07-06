@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Submit Promotion</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<h2>Submit Promotion Case</h2>
+
+<form
+    method="post"
+    enctype="multipart/form-data">
+
+<label>Faculty ID</label>
+
+<input type="number"
+       name="faculty_id">
+
+<br><br>
+
+<label>Title</label>
+
+<input type="text"
+       name="title">
+
+<br><br>
+
+<label>Statement</label>
+
+<br>
+
+<textarea
+name="statement"
+rows="6"
+cols="50"></textarea>
+
+<br><br>
+
+<p>
+        <label>Upload CV (PDF)</label><br>
+        <input
+            type="file"
+            name="cv"
+            accept=".pdf">
+</p>
+
+<button type="submit">
+
+Submit
+
+</button>
+
+</form>
+
+<p>
+
+<a href="/">Home</a>
+
+</p>
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}My Cases{% endblock %}
+
+{% block content %}
+
+<h2>📄 My Promotion Cases</h2>
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Faculty ID</th>
+    <th>Title</th>
+    <th>CV</th>
+    <th>Status</th>
+</tr>
+
+{% for c in cases %}
+
+<tr>
+    <td>{{ c.id }}</td>
+    <td>{{ c.faculty_id }}</td>
+    <td>{{ c.title }}</td>
+    <td>
+        {% if c.file_name %}
+            <a href="/uploads/{{ c.file_name }}" target="_blank">
+                📄 View CV
+            </a>
+        {% else %}
+            —
+        {% endif %}
+    </td>
+    <td>
+        <span class="status {{ c.status.lower() }}">
+            {{ c.status }}
+        </span>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% if cases|length == 0 %}
+<p>No cases submitted yet.</p>
+{% endif %}
+
+{% endblock %}

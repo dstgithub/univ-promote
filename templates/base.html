@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>{% block title %}PROMOTE{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <a href="/">Home</a>
+
+    {% if session.get("username") %}
+
+        {% if session.get("role") in ["faculty","admin"] %}
+            <a href="/submit">Submit</a>
+            <a href="/my_cases">My Cases</a>
+        {% endif %}
+
+        {% if session.get("role") in ["reviewer","admin"] %}
+            <a href="/cases">Cases</a>
+            <a href="/dashboard">Dashboard</a>
+        {% endif %}
+
+        {% if session.get('role') == 'admin' %}
+
+            <ul>
+
+                <li><a href="/submit">Submit</a></li>
+
+                <li><a href="/cases">Review Cases</a></li>
+
+                <li><a href="/admin/users">View Users</a></li>
+
+            </ul>
+
+        {% endif %}
+
+        <span class="user">
+
+            {{ session["username"] }}
+            ({{ session["role"] }})
+
+        </span>
+
+        <a class="logout"
+           href="/logout">
+
+            Logout
+
+        </a>
+
+    {% else %}
+
+        <a href="/login">
+
+            Login
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+<div class="container">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+</body>
+
+</html>

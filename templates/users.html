@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block content %}
+
+<h2>User Management</h2>
+
+<p>
+    <a class="button" href="/admin/users/add">
+        Add User
+    </a>
+</p>
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Role</th>
+    <th>Actions</th>
+</tr>
+
+{% for user in users %}
+
+<tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.username }}</td>
+    <td>
+        <span class="status {{ user.role }}">
+            {{ user.role }}
+        </span>
+    </td>
+    <td>
+        <a href="/admin/users/edit/{{ user.id }}">
+            Edit
+        </a>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

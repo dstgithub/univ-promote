@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+Submission Successful
+{% endblock %}
+
+{% block content %}
+
+<h2>✅ Promotion Case Submitted</h2>
+
+<p>
+    Your promotion case has been submitted successfully.
+</p>
+
+<table>
+
+<tr>
+    <td><strong>Case ID:</strong></td>
+    <td>{{ case_id }}</td>
+</tr>
+
+<tr>
+    <td><strong>Faculty ID:</strong></td>
+    <td>{{ faculty_id }}</td>
+</tr>
+
+<tr>
+    <td><strong>Promotion Title:</strong></td>
+    <td>{{ title }}</td>
+</tr>
+
+<tr>
+    <td><strong>Uploaded CV:</strong></td>
+    <td>
+        {% if filename %}
+            📄 {{ filename }}
+        {% else %}
+            No file uploaded
+        {% endif %}
+    </td>
+</tr>
+
+</table>
+
+<p>
+    It will be reviewed by the appropriate reviewer.
+</p>
+
+<hr>
+
+<p><strong>What would you like to do next?</strong></p>
+
+<p>
+    <a href="/submit">Submit Another Case</a>
+</p>
+
+<p>
+    <a href="/">Return to Home</a>
+</p>
+
+{% endblock %}

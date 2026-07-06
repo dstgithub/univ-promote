@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Cases
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Promotion Cases</h2>
+
+<form method="GET">
+
+    <label>Faculty ID:</label>
+    <input type="text"
+           name="faculty_id"
+           value="{{ request.args.get('faculty_id','') }}">
+
+    <label>Status:</label>
+    <select name="status">
+
+        <option value="">All</option>
+
+        <option value="Submitted"
+            {% if request.args.get('status') == 'Submitted' %}selected{% endif %}>
+            Submitted
+        </option>
+
+        <option value="Approved"
+            {% if request.args.get('status') == 'Approved' %}selected{% endif %}>
+            Approved
+        </option>
+
+        <option value="Rejected"
+            {% if request.args.get('status') == 'Rejected' %}selected{% endif %}>
+            Rejected
+        </option>
+
+    </select>
+
+    <button type="submit">Filter</button>
+
+</form>
+
+
+<br>
+
+<table>
+
+    <tr>
+        <th>ID</th>
+        <th>Faculty ID</th>
+        <th>Title</th>
+        <th>Status</th>
+    </tr>
+
+    {% for c in cases %}
+
+    <tr>
+
+        <td>
+            <a href="/case/{{ c.id }}">
+                {{ c.id }}
+            </a>
+        </td>
+
+        <td>{{ c.faculty_id }}</td>
+
+        <td>{{ c.title }}</td>
+
+        <td>
+            <span class="status {{ c.status | lower }}">
+                {{ c.status }}
+            </span>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}
