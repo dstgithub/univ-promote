@@ -52,6 +52,7 @@ Cases
         <th>ID</th>
         <th>Faculty ID</th>
         <th>Title</th>
+        <th>CV</th>
         <th>Status</th>
     </tr>
 
@@ -68,6 +69,17 @@ Cases
         <td>{{ c.faculty_id }}</td>
 
         <td>{{ c.title }}</td>
+
+        <td>
+            {% if c.file_name %}
+                <a href="{{ url_for('view_cv', filename=c.file_name) }}"
+                    target="_blank">
+                        View CV
+                </a>
+            {% else %}
+                No CV
+            {% endif %}
+        </td>
 
         <td>
             <span class="status {{ c.status | lower }}">

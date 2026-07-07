@@ -30,8 +30,9 @@
     <td><b>CV</b></td>
     <td>
         {% if case.file_name %}
-            <a href="/uploads/{{ case.file_name }}" target="_blank">
-                📄 View / Download CV
+            <a href="{{ url_for('view_cv', filename=c.file_name) }}"
+                target="_blank">
+                    View CV
             </a>
         {% else %}
             No CV uploaded

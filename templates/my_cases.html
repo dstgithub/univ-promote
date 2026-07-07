@@ -24,8 +24,9 @@
     <td>{{ c.title }}</td>
     <td>
         {% if c.file_name %}
-            <a href="/uploads/{{ c.file_name }}" target="_blank">
-                📄 View CV
+            <a href="{{ url_for('view_cv', filename=c.file_name) }}"
+                target="_blank">
+                    View CV
             </a>
         {% else %}
             —

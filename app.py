@@ -86,21 +86,21 @@ def init_db():
     INSERT OR IGNORE INTO users
     (username, password, role)
     VALUES
-    ('alice', 'password', 'faculty')
+    ('alice', 'gtpassword26', 'faculty')
     """)
 
     conn.execute("""
     INSERT OR IGNORE INTO users
     (username, password, role)
     VALUES
-    ('bob', 'password', 'reviewer')
+    ('bob', 'gtpassword26', 'reviewer')
     """)
 
     conn.execute("""
     INSERT OR IGNORE INTO users
     (username, password, role)
     VALUES
-    ('admin', 'password', 'admin')
+    ('admin', 'gtpassword26', 'admin')
     """)
 
     conn.commit()
@@ -228,14 +228,61 @@ def submit():
         filename=filename
     )
 
-@app.route("/uploads/<filename>")
-@require_role("reviewer", "admin")
-def uploaded_file(filename):
-    return send_from_directory(
-        app.config["UPLOAD_FOLDER"],
-        filename
-    )
-    
+
+    # ----------------------------
+    # Upload, view, and download cv
+    # ----------------------------
+
+@app.route("/cv/<filename>")
+def view_cv(filename):
+
+    # Must be logged in
+    if "username" not in session:
+        return redirect("/login")
+
+    conn = get_db()
+
+    case = conn.execute("""
+        SELECT submitted_by
+        FROM promotion_cases
+        WHERE file_name = ?
+    """, (filename,)).fetchone()
+
+    conn.close()
+
+    if case is None:
+        return "File not found", 404
+
+    role = session["role"]
+
+    # Reviewer and admin may view any uploaded CV
+    if role in ("reviewer", "admin"):
+        return send_from_directory(
+            app.config["UPLOAD_FOLDER"],
+            filename,
+            as_attachment=False
+        )
+
+    # Faculty may only view their own uploaded CV
+    if role == "faculty":
+
+        if case["submitted_by"] != session["username"]:
+            return "Access denied", 403
+
+        return send_from_directory(
+            app.config["UPLOAD_FOLDER"],
+            filename,
+            as_attachment=False
+        )
+
+    return "Access denied", 403
+
+
+
+    # ----------------------------
+    # Cases
+    # ----------------------------
+
 @app.route("/cases")
 def cases():
 
